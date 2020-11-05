@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express')
 //exporting the express module
 // afunction gets imported here
@@ -14,15 +15,66 @@ const expressLayout = require('express-ejs-layouts')
 const PORT = process.env.PORT || 3000
 //process.env resides outside our app. It is stored inside the process of the node. If it contains PORT variable then we will use PORT otherwise we will run it on 3000
 //3000 port is avilable on our live machine but it can be possible that this port will not be available on our live server
+const mongoose = require('mongoose')
 
-app.use(express.static('public'))
-app.get('/', (req, res) => {
-    res.render('home');
+const session = require('express-session')
+const flash = require('express-flash')
+const MongoDbStore = require('connect-mongo')(session)
+
+//Database Connection
+//This snippet is used in whenever we connect to Mongodb
+//-------------------------------START OF THE SNIPPET--------------------------------------
+
+const url = 'mongodb://localhost/books';
+mongoose.connect(url, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true, useFindAndModify: true});
+
+const connection = mongoose.connection;
+connection.once('open', () => {
+    console.log('Database Connected...');
+}).catch(err => {
+    console.log('Connnection failed...');
+});
+//------------------------------END OF THE SNIPPET-----------------------------------------
+
+//------------------------------SESSION-STORE----------------------------------------------
+
+let mongoStore = new MongoDbStore({
+    mongooseConnection: connection,
+    collection: 'sessions'
 })
 
+//------------------------------SESSION CONFIG-------------------------------------------
+
+//all the secret keys, passwords, api key etc should be stored in code.  A file called environment(env) file is created in which all variables are stored
+//we can get these variables into our files. To implement this we install yarn add dotenv
+
+app.use(session({
+    //by default sessions arestored in database.
+    secret: process.env.COOKIES_SECRET,
+    resave: false,
+    //sessions are to be stored under here given below
+    store: mongoStore,
+    saveUninitialized: false,
+    //store: mongoStore,
+    cookie: { maxAge: 1000 * 60 * 24}
+}))
+
+app.use(flash())
+
+//-----------------ASSETS-----------------------------------------------------
+app.use(express.static('public'))
+app.use(express.json())
+
+//Global middleware
+app.use((req, res, next) => {
+    res.locals.session = req.session 
+    next()
+})
 app.use(expressLayout)
 app.set('views', path.join(__dirname, '/resources/views'))
 app.set('view engine', 'ejs')
+
+require('./routes/web')(app)
 
 app.listen(3000, () => {
     console.log('Listening PORT 3000')

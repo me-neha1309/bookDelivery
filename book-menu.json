@@ -1,0 +1,65 @@
+[{
+  "_id": {
+    "$oid": "5eee651f739f8c674fd736ee"
+  },
+  "name": "Ncert books",
+  "image": "ncert_10.PNG",
+  "price": "250",
+  "publication": "government"
+},{
+  "_id": {
+    "$oid": "5eee6671a27a66807cf2bea3"
+  },
+  "name": "Civil Services",
+  "image": "Civil_services.PNG",
+  "price": "300",
+  "publication": "government"
+},{
+  "_id": {
+    "$oid": "5eee6692a27a66807cf2bea4"
+  },
+  "name": "Holy books",
+  "image": "holy_books.PNG",
+  "price": "200",
+  "publication": "private"
+},{
+  "_id": {
+    "$oid": "5eee66a5a27a66807cf2bea5"
+  },
+  "name": "Novels",
+  "image": "novels.PNG",
+  "price": "500",
+  "publication": "private"
+},{
+  "_id": {
+    "$oid": "5eee66c4a27a66807cf2bea6"
+  },
+  "name": "UPSC",
+  "image": "Upsc.PNG",
+  "price": "350",
+  "publication": "private"
+},{
+  "_id": {
+    "$oid": "5eee66cfa27a66807cf2bea7"
+  },
+  "name": "Graduation Books",
+  "image": "graduation_books.PNG",
+  "price": "200",
+  "publication": "Government"
+},{
+  "_id": {
+    "$oid": "5eee66eea27a66807cf2bea8"
+  },
+  "name": "Competitive Exams",
+  "image": "Competitive_exam.PNG",
+  "price": "600",
+  "publication": "private"
+},{
+  "_id": {
+    "$oid": "5eee6717a27a66807cf2bea9"
+  },
+  "name": "Novels",
+  "image": "novels.PNG",
+  "price": "500",
+  "publication": "private"
+}]
