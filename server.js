@@ -20,6 +20,7 @@ const mongoose = require('mongoose')
 const session = require('express-session')
 const flash = require('express-flash')
 const MongoDbStore = require('connect-mongo')(session)
+const passport = require('passport')
 
 //Database Connection
 //This snippet is used in whenever we connect to Mongodb
@@ -34,6 +35,8 @@ connection.once('open', () => {
 }).catch(err => {
     console.log('Connnection failed...');
 });
+
+
 //------------------------------END OF THE SNIPPET-----------------------------------------
 
 //------------------------------SESSION-STORE----------------------------------------------
@@ -59,14 +62,23 @@ app.use(session({
     cookie: { maxAge: 1000 * 60 * 24}
 }))
 
+//passport configuration should be after session
+const passportInit = require('./app/config/passport')
+passportInit(passport)
+app.use(passport.initialize())
+app.use(passport.session())
+
 app.use(flash())
 
 //-----------------ASSETS-----------------------------------------------------
 app.use(express.static('public'))
+//sometimes we can receive data of type url encoded so for this we'll HAVE TO DO
+app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 
 //Global middleware
 app.use((req, res, next) => {
+    res.locals.user = req.user
     res.locals.session = req.session 
     next()
 })
