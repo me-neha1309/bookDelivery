@@ -20,10 +20,9 @@ function orderController () {
 
             order.save().then(result => {
                 req.flash('success', 'Order placed successfully')
-                return res.redirect('/')
+                delete req.session.cart
+                return res.redirect('/customers/orders')
             }).catch(err => {
-                console.log("errr")
-                console.log(err)
                 req.flash('error', 'Something went wrong')
                 return res.redirect('/register')
             })
@@ -34,7 +33,7 @@ function orderController () {
         //thrn and catch can be used
         //async await can be used
         async index(req, res){
-            const orders = await Order.find({customerId: req.user._id })
+            const orders = await Order.find({customerId: req.user._id }, null, { sort: {'createdAt' : -1}})
             res.render('customers/orders', {orders: orders, moment: moment})
         }
     }

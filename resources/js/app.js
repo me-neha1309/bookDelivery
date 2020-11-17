@@ -2,6 +2,7 @@
 //First we are trying to get the buttons so that eventListener can be added onto it
 import axios from 'axios' 
 import Noty from 'noty'
+const { initAdmin } = require('./admin')
 let addToCart = document.querySelectorAll('.add-to-cart')
 let cartCounter = document.querySelector('#cartCounter')
 //This addToCart will be of array type and all the buttons will come here
@@ -36,3 +37,13 @@ addToCart.forEach((btn) => {
         console.log(book)
     })
 })
+
+//Remove alert message after x seconds
+const alertMsg = document.querySelector('success-alert')
+if(alertMsg) {
+    setTimeout(() => {
+        alertMsg.remove()
+    }, 1000)
+}
+
+initAdmin()
