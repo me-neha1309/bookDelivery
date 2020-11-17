@@ -2,7 +2,7 @@
 //First we are trying to get the buttons so that eventListener can be added onto it
 import axios from 'axios' 
 import Noty from 'noty'
-const { initAdmin } = require('./admin')
+import { initAdmin } from './admin'
 let addToCart = document.querySelectorAll('.add-to-cart')
 let cartCounter = document.querySelector('#cartCounter')
 //This addToCart will be of array type and all the buttons will come here
