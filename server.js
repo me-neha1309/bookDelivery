@@ -27,8 +27,7 @@ const Emitter = require('events')
 //This snippet is used in whenever we connect to Mongodb
 //-------------------------------START OF THE SNIPPET--------------------------------------
 
-const url = 'mongodb://localhost/books';
-mongoose.connect(url, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true, useFindAndModify: true});
+mongoose.connect(process.env.MONGO_CONNECTION_URL, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true, useFindAndModify: true});
 
 const connection = mongoose.connection;
 connection.once('open', () => {
@@ -93,6 +92,11 @@ app.set('view engine', 'ejs')
 
 require('./routes/web')(app)
 
+//for page not found
+app.use((req, res) => {
+    res.status(404).render('errors/404')
+})
+
 const server = app.listen(3000, () => {
     console.log('Listening PORT 3000')
     console.log(`Listening on port once more ${PORT}`) // to use the variable we'll have to use the back ticks
@@ -102,9 +106,9 @@ const server = app.listen(3000, () => {
 const io = require('socket.io')(server)
 io.on('connection', (socket) => {
     // join
-    console.log(socket.id)
+    //console.log(socket.id)
     socket.on('join', (orderId) => {
-        console.log(orderId)
+        //console.log(orderId)
         socket.join(orderId)
     })
 })
@@ -112,6 +116,12 @@ io.on('connection', (socket) => {
 eventEmitter.on('orderUpdated', (data) => {
     io.to(`order_${data.id}`).emit('orderUpdated', data)
 })
+
+eventEmitter.on('orderPlaced', (data) => {
+    io.to('adminRoom').emit('orderPlaced', data)
+})
+
+
 
 
 
