@@ -5,6 +5,7 @@ import Noty from 'noty'
 import { initAdmin } from './admin'
 //moment library for time
 import moment from 'moment'
+import { initStripe } from './stripe'
 let addToCart = document.querySelectorAll('.add-to-cart')
 let cartCounter = document.querySelector('#cartCounter')
 //This addToCart will be of array type and all the buttons will come here
@@ -83,6 +84,11 @@ function updateStatus(order) {
 }
 
 updateStatus(order);
+
+initStripe()
+
+
+
 
 //socket client side work
 let socket = io()
